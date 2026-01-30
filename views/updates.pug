@@ -1,0 +1,28 @@
+doctype html
+html(lang="en")
+    head
+        meta(charset="UTF-8")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        title Update Custom Object
+        link(rel="stylesheet", href="/css/style.css")
+    body
+        .container
+            h1 Add/Update Custom Object
+            
+            form(method="POST", action="/update-cobj")
+                .form-group
+                    label(for="name") Name:
+                    input(type="text", id="name", name="name", required)
+                
+                .form-group
+                    label(for="description") Description:
+                    input(type="text", id="description", name="description", required)
+                
+                .form-group
+                    label(for="price") Price:
+                    input(type="number", id="price", name="price", step="0.01", required)
+                
+                button(type="submit") Submit
+            
+            .actions
+                a(href="/") Back to Homepage
