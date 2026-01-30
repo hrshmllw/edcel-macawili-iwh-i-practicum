@@ -14,6 +14,10 @@ app.set("view engine", "pug");
 // Serve static files from /public
 app.use(express.static(__dirname + "/public"));
 
+// Middleware to parse form data
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+
 // GET route for homepage - fetch custom objects
 app.get("/", async (req, res) => {
 	const apiUrl = `https://api.hubspot.com/crm/v3/objects/${CUSTOM_OBJECT_NAME}?properties=name,description,price`;
@@ -41,6 +45,31 @@ app.get("/update-cobj", (req, res) => {
 	res.render("updates", {
 		title: "Update Custom Object Form | Integrating With HubSpot I Practicum",
 	});
+});
+
+// POST route to create custom object
+app.post("/update-cobj", async (req, res) => {
+	const { name, description, price } = req.body;
+	const apiUrl = `https://api.hubspot.com/crm/v3/objects/${CUSTOM_OBJECT_NAME}`;
+	const headers = {
+		Authorization: `Bearer ${HUBSPOT_ACCESS_TOKEN}`,
+		"Content-Type": "application/json",
+	};
+	const data = {
+		properties: {
+			name,
+			description,
+			price,
+		},
+	};
+
+	try {
+		await axios.post(apiUrl, data, { headers });
+		res.redirect("/");
+	} catch (error) {
+		console.error("Error creating custom object:", error.message);
+		res.status(500).send("Error creating custom object in HubSpot");
+	}
 });
 
 // Listen on port 3000
