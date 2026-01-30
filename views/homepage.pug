@@ -19,3 +19,12 @@ html(lang="en")
                         th Description
                         th Price
                 tbody
+                    if records && records.length > 0
+                        each record in records
+                            tr
+                                td= record.name
+                                td= record.description
+                                td= record.price
+                    else
+                        tr
+                            td(colspan="3", style="text-align: center;") No records found
